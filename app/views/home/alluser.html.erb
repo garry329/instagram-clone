@@ -1,0 +1,162 @@
+<!-- header starts here -->
+
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+	<%= content_for(:title,"Instagram")%>
+<div class="header">
+<div class="header-wrapper">
+<div class="logos">
+	<div class="homelogo-div" ><%=link_to (image_tag('/images/homelogo.png',:class =>"homelogo")),
+	home_index_path  %></div>
+	<div class="header-partition-line"></div>
+	<div class="download-div" ><%=link_to (image_tag('/images/download.png',:class =>"download")),home_index_path %></div>
+</div>
+<div class="search-bar">
+	<input type="text" class="top-search" placeholder="&#xf002;  Search" value="">
+</div>
+
+<div class="links">
+	<div class="users"><%= link_to(image_tag('/images/compass-icon.png',:class=>"links-top-icon"),home_alluser_path,class: "users") %></div>
+	<div class="profile"><%= link_to( image_tag('/images/user-icon.png',:class=>"links-top-icon"),profile_index_path(current_user.username),class: "profile") %></div>
+<div class="notifications w3-dropdown-click"><%= link_to( image_tag('/images/heart.png',:class=>"links-top-icon"),url_for(controller: :home , action: :notification),class: "newpost",remote: true,id: "myBtn")%>
+<div class="hidden-red-dot_<%=current_user.has_notifications%>" id="top-notification-dot"></div>
+    <div id="all-notifications" class="w3-dropdown-content w3-animate-zoom" style="display: none;">
+    <span class="close">&times;</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- header ends here -->
+<div class="all_user_outer_container">
+<% @users.each do |user| %>
+<%unless user.id == current_user.id%>
+		<div class="all_users_container">
+			<div class="all-user-name-wrapper">
+			<div class="all_user_profile_image">
+			<%= image_tag(user.avatar.url(:medium),:class =>"profile-pic") %>
+			</div>
+			<div class="all_user_username">
+			<h3><%= link_to user.username ,profile_index_path(user.username),class: "user-name1" %></h3>
+			<div class="all_user_fullname"><%= user.fullname%></div>
+			</div>
+			</div>
+				
+			
+			<div class="all_user_follow_button">
+				 
+				<%= link_to image_tag("#{current_user.follow_button user.id}"), url_for(controller: :home, action: :follow, celeb_id: user.id), method: :post ,remote: true , id: "follow_#{user.id}"%>
+				
+			</div>
+		</div>
+<% end %>
+<% end %>
+<div>
+<div id="newpost-icon"><%= image_tag("/images/newpost.png",:class=>"newpost1")%></div>
+<div class="newpost-popup"><%=render 'posts/newpost'%></div>
+<style type="text/css">
+	.all-user-name-wrapper{
+		display: flex;
+		flex-direction: row;
+	}
+	.all_user_outer_container{
+		display: flex;
+		padding-top: 120px;
+		flex-direction: column;
+		align-items: center;
+	}
+	.all_users_container{
+		display: flex;
+		justify-content: space-between;
+		padding: 10px;
+		height:80px;
+		width: 600px;
+		flex-direction: row;
+		border-left: 1px solid;
+		border-right: 1px solid;
+		border-top: 0.5px solid;
+		border-bottom: 0.5px solid;
+		border-color: #efefef;
+		
+	}
+	.profile-pic{
+		width: 100%;
+		height:100%;
+	}
+	.all_user_profile_image{
+		margin-left:5px;
+		margin-right: 10px; 
+		height: 60px;
+		width:60px;
+		border-radius: 60px;
+		background-color: blue;
+	}
+	.all_user_follow_button{
+		
+	}
+	.all_user_username{
+		color: #262626;
+		font-size: 14px;
+    	font-weight: 600;
+    	line-height: 10px;
+	}
+	.all_user_fullname{
+		    color: #999;
+		    font-size: 14px;
+    		font-weight: 400;
+    		margin-left: 15px;
+	}
+	.user-name1{
+		margin-top: 10px;
+		margin-left: 15px;
+		color: black;
+    	text-decoration: none;
+	}
+</style>
+<script type="text/javascript">
+;(function($) {
+        $(function() {
+            $('#newpost-icon').bind('click', function(e) {
+                e.preventDefault();
+                $('.newpost-popup').bPopup();
+
+            });
+
+        });
+
+    })(jQuery);
+  var modal = document.getElementById('all-notifications');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target != modal) {
+        modal.style.display = "none";
+    }
+
+}
+$("#myBtn").click(function(){
+    console.log("hello");
+    $("#top-notification-dot").css("display","none");
+});
+
+</script>

@@ -1,0 +1,89 @@
+
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<%= content_for(:title,"Instagram")%>
+
+<div class="header">
+<div class="header-wrapper">
+<div class="logos">
+	<div class="homelogo-div" ><%= image_tag('/images/homelogo.png',:class =>"homelogo")  %></div>
+  <div class="header-partition-line"></div>
+	<div class="download-div" ><%= image_tag('/images/download.png',:class =>"download")  %></div>
+</div>
+<div class="search-bar">
+	<input type="text" class="top-search" placeholder="&#xf002;  Search" value="">
+</div>
+
+<div class="links">
+  <div class="users"><%= link_to(image_tag('/images/compass-icon.png',:class=>"links-top-icon"),home_alluser_path,class: "users") %></div>
+  <div class="profile"><%= link_to( image_tag('/images/user-icon.png',:class=>"links-top-icon"),profile_index_path(current_user.username),class: "profile") %></div>
+<div class="notifications w3-dropdown-click"><%= link_to( image_tag('/images/heart.png',:class=>"links-top-icon"),url_for(controller: :home , action: :notification),class: "newpost",remote: true,id: "myBtn")%>
+<div class="hidden-red-dot_<%=current_user.has_notifications%>" id="top-notification-dot"></div>
+    <div id="all-notifications" class="w3-dropdown-content w3-animate-zoom" style="display: none;">
+    <span class="close">&times;</span>
+    </div>
+  </div>
+
+</div>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+<div class="posts">
+ <% @posts.each do |post| %>
+<div class="post">
+ 
+ <%=render 'post',post:post%>
+ <%=render 'like',post:post%>
+ <%=render 'comment',post:post%>
+</div>
+<%end%>
+      </div>
+<div id="newpost-icon"><%= image_tag("/images/newpost.png",:class=>"newpost1")%></div>
+<div class="newpost-popup"><%=render 'posts/newpost'%></div>
+<script type="text/javascript">
+  
+  ;(function($) {
+        $(function() {
+            $('#newpost-icon').bind('click', function(e) {
+                e.preventDefault();
+                $('.newpost-popup').bPopup();
+
+            });
+
+        });
+
+    })(jQuery);
+
+ var modal = document.getElementById('all-notifications');
+
+var btn = document.getElementById("myBtn");
+
+var span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+span.onclick = function() {
+    modal.style.display = "none";
+}
+window.onclick = function(event) {
+    if (event.target != modal) {
+        modal.style.display = "none";
+    }
+
+}
+$("#myBtn").click(function(){
+    console.log("hello");
+    $("#top-notification-dot").css("display","none");
+});
+</script>
+
